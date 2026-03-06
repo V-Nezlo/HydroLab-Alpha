@@ -138,20 +138,16 @@ private:
 
 	static nlohmann::json toJson(const std::any &v)
 	{
-		if (v.type() == typeid(int))
-			return std::any_cast<int>(v);
-		if (v.type() == typeid(double))
-			return std::any_cast<double>(v);
-		if (v.type() == typeid(float))
-			return std::any_cast<float>(v);
-		if (v.type() == typeid(bool))
-			return std::any_cast<bool>(v);
-		if (v.type() == typeid(std::string))
-			return std::any_cast<std::string>(v);
-		if (v.type() == typeid(uint64_t))
-			return std::any_cast<uint64_t>(v);
-		if (v.type() == typeid(DeviceStatus))
-			return std::any_cast<int>(v);
+		// clang-format off
+		if (v.type() == typeid(int)) return std::any_cast<int>(v);
+		if (v.type() == typeid(double)) return std::any_cast<double>(v);
+		if (v.type() == typeid(float)) return std::any_cast<float>(v);
+		if (v.type() == typeid(bool)) return std::any_cast<bool>(v);
+		if (v.type() == typeid(std::string)) return std::any_cast<std::string>(v);
+		if (v.type() == typeid(uint64_t)) return std::any_cast<uint64_t>(v);
+		if (v.type() == typeid(DeviceStatus)) return std::any_cast<int>(v);
+		// clang-format on
+
 		if (v.type() == typeid(unsigned)) {
 			const unsigned value = std::any_cast<unsigned>(v);
 			return value;

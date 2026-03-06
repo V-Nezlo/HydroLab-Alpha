@@ -31,6 +31,8 @@ static constexpr std::string kTurbidimeterDev    = "turbidimeter";
 static constexpr std::string kTemperatureDev     = "temperature";
 static constexpr std::string kBridgeDev          = "bridge";
 static constexpr std::string kSystemDev          = "system";
+static constexpr std::string kLitreMeterDev      = "litreMeter";
+static constexpr std::string kFlowDetectorDev    = "flowDetector";
 // Типы записей
 static constexpr std::string kTelemPostfix   = ".telem";
 static constexpr std::string kConfigPostfix  = ".config";
@@ -43,6 +45,12 @@ static constexpr std::string kStatusStrEnder = ".statusStr";
 // Предсоставленные имена подписок
 static const std::string kTelemPipe          = kMultiControllerDev + kRsPostfix + ".data";
 static const std::string kTelemBridgeStatus  = kBridgeDev + kRsPostfix + ".status";
+
+static const std::string kLitreMeterFullVal  = kLitreMeterDev + kIntPostfix + ".fullValue";
+static const std::string kLitreMeterTankVal  = kLitreMeterDev + kIntPostfix + ".tankValue";
+static const std::string kLitreMeterTubeVal  = kLitreMeterDev + kIntPostfix + ".tubeValue";
+static const std::string kLitreMeterCalibLit = kLitreMeterDev + kConfigPostfix + "calLitre"; // Калибровочное значение литров
+static const std::string kLitreMeterCalibLev = kLitreMeterDev + kConfigPostfix + "calLevel"; // Калибровочное значение уровня
 // Параметры
 static const std::string kLampEnabled        = kLampDev + kConfigPostfix + ".enabled"; // bool
 static const std::string kLampOnTime         = kLampDev + kConfigPostfix + ".onTime"; // secs

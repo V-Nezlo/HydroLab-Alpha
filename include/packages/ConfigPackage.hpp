@@ -6,6 +6,7 @@
 #include "core/FieldValidators.hpp"
 #include "core/Helpers.hpp"
 #include "core/InterfaceList.hpp"
+#include "core/Options.hpp"
 #include <memory>
 #include <string>
 
@@ -44,6 +45,16 @@ struct ConfigPackage {
 		manager.registerSetting(Names::kBridgeMacs + ".4", SettingType::STRING, "", "MAC4");
 		manager.registerSetting(Names::kBridgeMacs + ".5", SettingType::STRING, "", "MAC5");
 		manager.registerSetting(Names::kBridgeMacs + ".6", SettingType::STRING, "", "MAC6");
+
+		// Генерация таблицы калибровки бака
+		// Дефолтным значением будет калибровка на емкость 30 литров
+		for (auto i = 0; i < Options::kCalibTableSize; ++i) {
+			const float level = static_cast<float>(i * 10);
+			const float litre = static_cast<float>(i * 3);
+			const std::string number = std::to_string(i);
+			manager.registerSetting(Names::kLitreMeterCalibLev + number, SettingType::FLOAT, level, "Calibration point #" + number + " water level");
+			manager.registerSetting(Names::kLitreMeterCalibLit + number, SettingType::FLOAT, litre, "Calibration point #" + number + " litres");
+		}
 	}
 
 	void generateValidators()

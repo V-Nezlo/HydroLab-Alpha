@@ -27,7 +27,6 @@ public:
 		close();
 	}
 
-	// Можно логировать снаружи, если open/ping вернули false.
 	const std::string& lastError() const { return m_lastError; }
 
 	bool open() override
@@ -38,7 +37,6 @@ public:
 
 		m_lastError.clear();
 
-		// Быстрая проверка наличия ноды (не обязательна, но помогает не спамить errno).
 		struct stat st {};
 		if (::stat(m_device.c_str(), &st) != 0) {
 			m_lastError = "Device node not found: " + m_device + " (" + std::string(::strerror(errno)) + ")";
@@ -76,7 +74,6 @@ public:
 	bool ping() override
 	{
 		if (fd >= 0) {
-			// Быстрая проверка: не пришёл ли HUP/ERR/NVAL
 			struct pollfd pfd {};
 			pfd.fd = fd;
 			pfd.events = POLLIN;

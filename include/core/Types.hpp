@@ -4,11 +4,19 @@
 #include <array>
 #include <cstdint>
 
+struct CalibPoint {
+	float level;
+	float litre;
+};
+
 enum class PumpModes {
 	EBBNormal,
 	EBBSwing,
 	Dripping,
 };
+
+enum class PlainType { Drainage, Irrigation };
+enum class SwingState { SwingOn, SwingOff };
 
 // clang-format off
 enum class DeviceStatus {

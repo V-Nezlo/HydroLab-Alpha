@@ -1,11 +1,11 @@
 #pragma once
 
+#include "core/Blackboard.hpp"
+#include "core/EventBus.hpp"
 #include "logger/Logger.hpp"
-#include <chrono>
-#include <core/Blackboard.hpp>
-#include <core/EventBus.hpp>
+#include "storage/Database.hpp"
 
-#include "json/value.h"
+#include <json/value.h>
 #include <drogon/HttpController.h>
 #include <drogon/HttpResponse.h>
 #include <drogon/HttpTypes.h>
@@ -14,9 +14,9 @@
 #include <nlohmann/json.hpp>
 
 #include <any>
+#include <chrono>
 #include <memory>
 #include <sstream>
-#include <storage/Database.hpp>
 #include <string>
 
 using json = nlohmann::json;
@@ -72,7 +72,6 @@ public:
 				} else {
 					result[key] = bb->getTypeName(key);
 				}
-
 			}
 		}
 
@@ -143,6 +142,7 @@ public:
 		}
 
 		auto resp = HttpResponse::newHttpResponse();
+		resp->setContentTypeCode(drogon::CT_APPLICATION_JSON);
 		if (!result) {
 			resp->setStatusCode(k400BadRequest);
 		} else {

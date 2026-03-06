@@ -26,7 +26,7 @@ class MicroDeviceHub : public AbstractEntryObserver {
 	BlackboardEntry<HydroRS::MultiControllerTelem> telemPipe;
 	MonitorEntry monitor;
 
-	enum DeviceType {Pump, Lamp, WaterLevel, PPMMeter, PHMeter, Turbidimeter, Temperature, UpperLevel, Bridge, System};
+	enum DeviceType {Pump, Lamp, WaterLevel, PPMMeter, PHMeter, Turbidimeter, Temperature, UpperLevel, FlowDetector, Bridge, System};
 	std::unordered_map<DeviceType, UDevice> list;
 
 public:
@@ -45,6 +45,7 @@ public:
 		list.emplace(Temperature, UDevice{Names::kTemperatureDev, aBb});
 		list.emplace(UpperLevel, UDevice{Names::kUpperLevelDev, aBb});
 		list.emplace(System, UDevice{Names::kSystemDev, aBb});
+		list.emplace(FlowDetector, UDevice{Names::kFlowDetectorDev}, aBb);
 
 		bridgeStatus.subscribe(this);
 		telemPipe.subscribe(this);
@@ -93,9 +94,6 @@ private:
 	{
 		HydroRS::MultiControllerTelem telem = std::any_cast<HydroRS::MultiControllerTelem>(aValue);
 
-		// Тут выведу типы руками, поскольку видел как автоматически разрешаемые типы разрешились неверно
-		// Хотя в случае использования фундаментальных типов такого не должно произойти, никаких u8-u16 тут нет
-		// Потом перепроверю
 		list.at(Pump).updateValue<bool>(telem.pumpState);
 		list.at(Lamp).updateValue<bool>(telem.lampState);
 		list.at(WaterLevel).updateValue<float>(telem.waterLevel);
@@ -105,6 +103,7 @@ private:
 		list.at(UpperLevel).updateValue<bool>(telem.upperState);
 		list.at(Temperature).updateValue<float>(telem.temperature);
 		list.at(System).updateValue<bool>(true);
+		list.at(FlowDetector).updateValue<bool>(telem.flowDetector);
 
 		for (auto &dev : list) {
 			// Систему и бридж пропускаем, они работают по другому
@@ -288,6 +287,9 @@ private:
 					str += "Turbidimeter error\n";
 				}
 				break;
+			case DeviceType::FlowDetector:
+				break;
+
 			default:
 				break;
 		}

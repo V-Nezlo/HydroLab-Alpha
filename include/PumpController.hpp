@@ -25,9 +25,6 @@ class PumpController : public AbstractEntryObserver {
 	using milliseconds = std::chrono::milliseconds;
 	using seconds = std::chrono::seconds;
 
-	enum class PlainType { Drainage, Irrigation };
-	enum class SwingState { SwingOn, SwingOff };
-
 	std::shared_ptr<Blackboard> bb;
 	std::shared_ptr<EventBus> bus;
 

@@ -6,6 +6,7 @@
 #include "BbNames.hpp"
 #include "DrogonApp.hpp"
 #include "LampController.hpp"
+#include "MicroDeviceHub.hpp"
 #include "PumpController.hpp"
 #include "RadioHandler.hpp"
 #include "core/Blackboard.hpp"
@@ -19,7 +20,6 @@
 #include "packages/ConfigPackage.hpp"
 #include "packages/DatabasePackage.hpp"
 #include "storage/Database.hpp"
-#include "MicroDeviceHub.hpp"
 
 #include <UtilitaryRS/Crc64.hpp>
 #include <UtilitaryRS/Crc8.hpp>
@@ -86,14 +86,10 @@ public:
 			std::cout << "Config not found, creating..." << std::endl;
 		}
 
-		if (bb->isType<int>(Names::kWaterLevelMinLevel)) {
-			std::cout << "catcha!";
-		}
-
 		rest->registerInterfaces(bb, bus);
 		sock->registerInterfaces(bb, bus);
 		rest->initPathRouting();
-		drogonApp.setTerminator([this](){started = false;});
+		drogonApp.setTerminator([this]() { started = false; });
 	}
 
 	int run()
@@ -132,6 +128,7 @@ public:
 		telem.pumpState = true;
 		telem.lampState = false;
 		telem.upperState = false;
+		telem.fiderState = false;
 		telem.temperature = 13.f;
 		telem.ph = 7.5f;
 		telem.ppm = 700;
@@ -149,5 +146,4 @@ public:
 
 		telemPipe.set(telem);
 	}
-
 };

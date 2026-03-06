@@ -1,8 +1,19 @@
+/*!
+@file
+@brief Blackboard
+@author V-Nezlo (vlladimirka@gmail.com)
+@date 10.09.2025
+@version 1.0
+*/
+
+
 #pragma once
 
 #include "core/InterfaceList.hpp"
+#include "HeteroLookup.hpp"
 #include "core/Types.hpp"
 #include "logger/Logger.hpp"
+
 #include <any>
 #include <functional>
 #include <iostream>
@@ -15,45 +26,8 @@
 #include <algorithm>
 #include <utility>
 #include <vector>
-
-struct StrHash {
-  using is_transparent = void;
-
-  size_t operator()(std::string_view s) const noexcept {
-	return std::hash<std::string_view>{}(s);
-  }
-  size_t operator()(const std::string& s) const noexcept {
-	return (*this)(std::string_view{s});
-  }
-  size_t operator()(const char* s) const noexcept {
-	return (*this)(std::string_view{s});
-  }
-};
-
-struct StrEq {
-  using is_transparent = void;
-
-  bool operator()(const std::string& a, const std::string& b) const noexcept {
-	return a == b;
-  }
-
-  bool operator()(std::string_view a, std::string_view b) const noexcept {
-	return a == b;
-  }
-  bool operator()(const std::string& a, std::string_view b) const noexcept {
-	return std::string_view{a} == b;
-  }
-  bool operator()(std::string_view a, const std::string& b) const noexcept {
-	return a == std::string_view{b};
-  }
-  bool operator()(const char* a, std::string_view b) const noexcept {
-	return std::string_view{a} == b;
-  }
-  bool operator()(std::string_view a, const char* b) const noexcept {
-	return a == std::string_view{b};
-  }
-};
-
+#include <cstddef>
+#include <cstring>
 
 class AbstractEntryObserver {
 public:
@@ -164,11 +138,6 @@ public:
 	/// \return
 	bool insertValidator(std::string_view aEntry, std::unique_ptr<AbstractValidator> aValidator)
 	{
-		// if (!has(aEntry)) {
-		// 	HYDRO_LOG_ERROR("Validator was not inserted");
-		// 	return false;
-		// }
-
 		if (validators.contains(aEntry)) {
 			HYDRO_LOG_ERROR("Validator already registered");
 			return false;
@@ -320,16 +289,15 @@ private:
 	{
 		std::vector<AbstractEntryObserver *> keyObserversCopy;
 		std::vector<std::pair<std::string_view, AbstractPrefixObserver *>> prefixObserversCopy;
+
 		{
 			std::lock_guard lock(mutex);
 
-			// Копируем наблюдатели для конкретного ключа
 			auto keyIt = keyObservers.find(key);
 			if (keyIt != keyObservers.end()) {
 				keyObserversCopy = keyIt->second;
 			}
 
-			// Копируем наблюдатели для префиксов
 			for (const auto &[prefix, observers] : prefixObservers) {
 				if (key.find(prefix) != std::string::npos) {
 					for (auto *observer : observers) {
@@ -339,7 +307,6 @@ private:
 			}
 		}
 
-		// Уведомляем наблюдатели вне мьютекса
 		for (auto *observer : keyObserversCopy) {
 			observer->onEntryUpdated(key, value);
 		}

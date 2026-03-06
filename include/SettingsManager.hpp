@@ -24,45 +24,79 @@ struct SettingDefinition {
 	std::string description;
 };
 
+/* Таблица сериализации
+ * std::chrono типы -> int
+*/
+
+/// \brief Класс менеджера настроек, является модулем BB
+/// Автоматически создает entry в BB, но имеет и свои entry
+/// Свои entry имеют удобно сериализируемые типы, так seconds -> int
 class SettingsManager : public AbstractEntryObserver {
-public:
-	SettingsManager(std::shared_ptr<Blackboard> blackboard,
-					const std::string &filename = "config.json",
-					bool autoSave = true);
-	SettingsManager(const SettingsManager &) = delete;
-	SettingsManager &operator=(const SettingsManager &) = delete;
-	~SettingsManager() override;
+	using Schema = std::unordered_map<std::string, SettingDefinition, StrHash, StrEq>;
+	using Parameters = std::unordered_map<std::string, SettingValue, StrHash, StrEq>;
 
-	// Регистрация настроек
-	void registerSetting(const std::string &key, SettingType type,
-						 SettingValue defaultValue, const std::string &desc = "");
-
-	// Работа с конфигом
-	bool load();
-	bool save();
-
-	// Коллбек из Blackboard
-	void onEntryUpdated(std::string_view entry, const std::any &value) override;
-
-private:
-	// Внутренние инструменты
-	bool validateSchema(const json &existingConfig) const;
-	void writeToBlackboard(const std::unordered_map<std::string, SettingValue> &vals);
-
-	json generateSchema() const;
-	json getConfigForSaving() const;
-	void adjustTypes(std::unordered_map<std::string, SettingValue> &effective);
-
-	static std::string toString(SettingType type);
-
-private:
-	std::unordered_map<std::string, SettingDefinition> schema;
-	std::unordered_map<std::string, SettingValue> defaults;
+	Schema schema;
+	Parameters defaults;
 
 	std::string filename;
 	std::shared_ptr<Blackboard> blackboard;
 
 	bool autoSave;
-	bool loadingProcess;
-	bool initialized{false};
+	bool initialized;
+
+public:
+	SettingsManager(std::shared_ptr<Blackboard> aBb,
+					const std::string &aFileName = "config.json",
+					bool aAutoSave = true);
+
+	SettingsManager(const SettingsManager &) = delete;
+	SettingsManager &operator=(const SettingsManager &) = delete;
+	~SettingsManager() override;
+
+	/// \brief Регистрация entry-параметров с публикацией в BB
+	/// \param key Имя entry
+	/// \param type Тип параметра
+	/// \param defaultValue Значение по умолчанию
+	/// \param desc Описание параметра
+	void registerSetting(const std::string &key, SettingType type,
+		SettingValue defaultValue, const std::string &desc = "");
+
+	/// \brief Загрузить параметры из файла
+	/// \return true если загрузка удачная, иначе false
+	bool load();
+
+	/// \brief Сохранить параметры в файл
+	/// \return true если сохранение успешно, иначе false
+	bool save();
+
+	// AbstractEntryObserver interface
+	void onEntryUpdated(std::string_view entry, const std::any &value) override;
+
+private:
+
+	/// \brief Сравнить существующую схему с новосозданной
+	/// \param existingConfig существующая схема (из файла)
+	/// \return true если схемы сходятся, иначе false
+	bool validateSchema(const json &existingConfig) const;
+
+	/// \brief Записать в BB, используется при инициализации
+	/// \param vals пак параметров
+	void writeToBlackboard(const Parameters &vals);
+
+	/// \brief Собрать схему из переданных параметров
+	/// \return json
+	json generateSchema() const;
+
+	/// \brief Возвращает json с параметрами, сериализует нетривиальные типы
+	/// \return json с параметрами
+	json getConfigForSaving() const;
+
+	/// \brief deSerializeTypes
+	/// \param effective
+	void deSerializeTypes(Parameters &effective);
+
+	/// \brief Получить строковое определение типа параметра
+	/// \param type Тип параметра
+	/// \return строка с названием
+	static std::string toString(SettingType type);
 };

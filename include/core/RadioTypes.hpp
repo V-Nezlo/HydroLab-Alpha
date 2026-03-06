@@ -60,6 +60,7 @@ struct MultiControllerTelem {
 	bool pumpState;
 	bool lampState;
 	bool upperState;
+	bool flowDetector;
 
 	float waterLevel;
 	float ppm;
