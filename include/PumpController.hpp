@@ -21,6 +21,7 @@
 
 #include <bits/shared_ptr.h>
 
+/// \brief Контроллер насоса
 class PumpController : public AbstractEntryObserver {
 	using milliseconds = std::chrono::milliseconds;
 	using seconds = std::chrono::seconds;

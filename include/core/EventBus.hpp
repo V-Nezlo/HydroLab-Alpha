@@ -22,6 +22,7 @@ public:
 	virtual void handleEvent(EventType aEv, std::any &aValue) = 0;
 };
 
+/// \brief Шина событий для коммуникации подсистем
 class EventBus {
 public:
 	void sendEvent(EventType aEv, std::any aValue)

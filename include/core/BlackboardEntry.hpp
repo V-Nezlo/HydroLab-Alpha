@@ -5,6 +5,7 @@
 #include <memory>
 #include <type_traits>
 
+/// \brief Обертка над BB, описывающая одну запись
 template<typename T>
 class BlackboardEntry {
 public:
@@ -12,6 +13,9 @@ public:
 	{
 	}
 
+	/// \brief Установить значение
+	/// \param aValue значение типа T, если T это enum то записывается int
+	/// \return true если запись успешна
 	bool set(T aValue)
 	{
 		if constexpr (std::is_enum_v<T>) {
@@ -22,11 +26,15 @@ public:
 		}
 	}
 
+	/// \brief Есть ли значение в ии
+	/// \return true если есть
 	bool present() const
 	{
 		return bb->has(name);
 	}
 
+	/// \brief Прочитать значение типа T (throwable!)
+	/// \return значение
 	T read() const
 	{
 		if constexpr (std::is_enum_v<T>) {
@@ -37,6 +45,8 @@ public:
 		}
 	}
 
+	/// \brief Подписать entryObserver
+	/// \param aObs обсервер
 	void subscribe(AbstractEntryObserver *aObs)
 	{
 		return bb->subscribe(name, aObs);

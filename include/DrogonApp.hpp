@@ -9,6 +9,7 @@
 #include <functional>
 #include <thread>
 
+/// \brief Инкапсулянт Drogon
 class DrogonApp {
 public:
 	DrogonApp(std::shared_ptr<BackRestController> aRest, std::shared_ptr<BackWebSocket> aSocket, std::shared_ptr<HardeningFilter> aFilter):

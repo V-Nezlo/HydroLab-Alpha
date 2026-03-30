@@ -14,6 +14,7 @@ enum class MonitorFlags {
 };
 // clang-format on
 
+/// \brief Синглтон для хранения состояний
 class MonitorEntry {
 	static constexpr std::string kMonName = "DeviceFlags";
 public:

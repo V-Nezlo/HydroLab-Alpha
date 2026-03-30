@@ -23,6 +23,7 @@
 #include <thread>
 #include <unordered_map>
 
+/// \brief Класс связывающий UtilitaryRS, EspNowUsbProto и остальное приложение
 class SerialEspProxy : public AbstractSerial {
 	using Parser = RS::RsParser<64, Crc8>;
 

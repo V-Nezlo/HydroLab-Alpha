@@ -58,7 +58,8 @@ void Database::insertText(unsigned level, const std::string &msg)
 	}
 }
 
-std::vector<std::tuple<std::string, std::string, double, std::string> > Database::queryHistory(const std::string &key, const std::string &fromTs, const std::string &toTs, size_t limit)
+std::vector<std::tuple<std::string, std::string, double, std::string>> Database::queryHistory(
+	const std::string &key, const std::string &fromTs, const std::string &toTs, size_t limit)
 {
 	std::vector<std::tuple<std::string, std::string, double, std::string>> out;
 
@@ -104,7 +105,6 @@ Database::TelemetryValue Database::convertAny(const std::any &a)
 	if (a.type() == typeid(uint64_t)) {
 		uint64_t v = std::any_cast<uint64_t>(a);
 
-		// Возможна потеря точности
 		return {"u64", static_cast<double>(v)};
 	}
 

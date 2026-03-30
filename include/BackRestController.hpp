@@ -21,6 +21,7 @@
 
 using json = nlohmann::json;
 
+/// \brief REST контроллер Drogon
 class BackRestController : public drogon::HttpController<BackRestController, false> {
 public:
 	METHOD_LIST_BEGIN

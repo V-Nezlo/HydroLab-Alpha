@@ -1,0 +1,5 @@
+project(Test)
+add_executable(Test1 test.cpp)
+target_link_libraries(TestExample PRIVATE Sources)
+target_link_libraries(TestExample PRIVATE UtilitaryRS)
+add_test(NAME Test1 COMMAND Test1)

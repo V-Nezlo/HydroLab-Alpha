@@ -10,7 +10,7 @@
 #include <memory>
 #include <string>
 
-
+/// \brief Централизованный генератор конфигурации
 struct ConfigPackage {
 	ConfigPackage(std::string aFileName, std::shared_ptr<Blackboard> aBb) :
 		name{aFileName},
@@ -48,7 +48,7 @@ struct ConfigPackage {
 
 		// Генерация таблицы калибровки бака
 		// Дефолтным значением будет калибровка на емкость 30 литров
-		for (auto i = 0; i < Options::kCalibTableSize; ++i) {
+		for (size_t i = 0; i < Options::kCalibTableSize; ++i) {
 			const float level = static_cast<float>(i * 10);
 			const float litre = static_cast<float>(i * 3);
 			const std::string number = std::to_string(i);

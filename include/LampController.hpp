@@ -17,6 +17,7 @@
 #include <memory>
 #include <thread>
 
+/// \brief Контроллер лампы (освещения)
 class LampController : public AbstractEntryObserver {
 public:
 	LampController(std::shared_ptr<Blackboard> aBb, std::shared_ptr<EventBus> aEvBus);
@@ -26,7 +27,7 @@ public:
 	bool isStarted() const;
 
 	// AbstractEntryObserver interface
-	void onEntryUpdated(std::string_view entry, const std::any &value);
+	void onEntryUpdated(std::string_view entry, const std::any &value) override;
 
 private:
 	std::shared_ptr<Blackboard> bb;

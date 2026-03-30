@@ -31,7 +31,11 @@ static inline std::string packMac(std::array<uint8_t, 6> aMac)
 	return out;
 }
 
-// Возвращает true если строка строго в формате "XX:XX:XX:XX:XX:XX"
+/// \brief Возвращает true если строка строго в формате "XX:XX:XX:XX:XX:XX"
+/// \param aStr строка
+/// \param out массив байт с mac
+/// \return
+///
 static inline bool unpackMac(const std::string &aStr, std::array<uint8_t, 6> &out)
 {
 	if (aStr.size() != 17) return false;

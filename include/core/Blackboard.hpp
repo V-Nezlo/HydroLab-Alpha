@@ -29,18 +29,21 @@
 #include <cstddef>
 #include <cstring>
 
+/// \brief Наблюдатель BB за отдельными entry
 class AbstractEntryObserver {
 public:
 	virtual ~AbstractEntryObserver() = default;
 	virtual void onEntryUpdated(std::string_view entry, const std::any &value) = 0;
 };
 
+/// \brief Наблюдатель BB за entry по префиксу
 class AbstractPrefixObserver {
 public:
 	virtual ~AbstractPrefixObserver() = default;
 	virtual void onPrefixUpdated(std::string_view prefix, std::string_view entry, const std::any &value) = 0;
 };
 
+/// \brief Blackboard IPC класс
 class Blackboard {
 private:
 	std::unordered_map<std::string, std::any, StrHash, StrEq> data;

@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 
+/// \brief Вычислитель литраха рабочего тела и бака
 class LitreMeter : public AbstractEntryObserver {
 	struct CalibEntry {
 		float level;

@@ -10,6 +10,7 @@
 #include <drogon/HttpFilter.h>
 #include <drogon/HttpTypes.h>
 
+/// \brief Простенький HTTP фильтр для Drogon
 class HardeningFilter : public drogon::HttpFilter<HardeningFilter, false> {
 public:
 	void doFilter(

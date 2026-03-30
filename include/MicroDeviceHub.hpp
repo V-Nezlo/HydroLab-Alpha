@@ -19,6 +19,7 @@
 #include <memory>
 #include <string>
 
+/// \brief Абстрактный хаб с абстрактными микронодами
 class MicroDeviceHub : public AbstractEntryObserver {
 	std::shared_ptr<Blackboard> bb;
 
@@ -53,7 +54,7 @@ public:
 	}
 
 	// AbstractEntryObserver interface
-	void onEntryUpdated(std::string_view aEntry, const std::any &aValue)
+	void onEntryUpdated(std::string_view aEntry, const std::any &aValue) override
 	{
 		if (aEntry == bridgeStatus.getName()) {
 			parseBridgeStatus(aValue);

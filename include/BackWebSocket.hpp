@@ -19,6 +19,7 @@
 #include <thread>
 #include <unordered_set>
 
+/// \brief Websocket Drogon
 class BackWebSocket : public drogon::WebSocketController<BackWebSocket, false>, public AbstractPrefixObserver {
 public:
 	BackWebSocket() = default;

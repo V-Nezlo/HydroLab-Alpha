@@ -22,6 +22,7 @@
 
 using namespace std::chrono_literals;
 
+/// \brief Сердце UtilitaryRS с хабом и мостом между протоколом и всем приложением
 class RadioHandler : public RS::DeviceHubObserver, public EventBusObserver {
 	using Hub = RS::DeviceHub<10, SerialEspProxy, TimeWrapper, Crc8, Crc64, 256>;
 

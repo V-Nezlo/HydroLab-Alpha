@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 
+/// \brief Абстрактный микродевайс
 class UDevice {
 	std::shared_ptr<Blackboard> bb;
 	std::string valueName;

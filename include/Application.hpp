@@ -35,6 +35,7 @@
 #include <memory>
 #include <thread>
 
+/// \brief Главный класс, описывающий приложение
 class Application {
 	Args args;
 

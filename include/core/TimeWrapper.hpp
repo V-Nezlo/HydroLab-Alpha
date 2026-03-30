@@ -2,6 +2,7 @@
 
 #include <chrono>
 
+/// \brief Обертка для прокидывания времени в UtilitaryRS
 class TimeWrapper {
 public:
 	static std::chrono::microseconds microseconds()
